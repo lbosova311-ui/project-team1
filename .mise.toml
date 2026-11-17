@@ -1,0 +1,19 @@
+[tools]
+terraform = "1.14"
+kubectl = "1.34"
+helm = "3.19"
+helmfile = "1.2"
+awscli = "latest"
+jq = "latest"
+yq = "latest"
+maven = "3.9"
+go = "1.27.3"
+
+[tools."ubi:kubernetes-sigs/kind"]
+version = "latest"
+
+[tools."ubi:tilt-dev/tilt"]
+version = "latest"
+
+[env]
+_.path = ["./node_modules/.bin"]

@@ -1,4 +1,4 @@
-# ===== Секрети та оточення =====
+# Secrets and Environment
 .env
 .env.*
 !.env.example
@@ -6,7 +6,7 @@
 *.key
 secrets/
 
-# ===== Terraform =====
+# Terraform
 **/.terraform/
 *.tfstate
 *.tfstate.*
@@ -17,9 +17,8 @@ crash.*.log
 !terraform.tfvars.example
 .terraformrc
 terraform.rc
-# .terraform.lock.hcl коммітять, тому не ігноруємо
 
-# ===== Java / Maven / Gradle =====
+# Java / Maven / Gradle
 target/
 build/
 .gradle/
@@ -29,7 +28,7 @@ build/
 !**/gradle/wrapper/gradle-wrapper.jar
 hs_err_pid*
 
-# ===== Node / React =====
+# Node / React
 node_modules/
 npm-debug.log*
 yarn-debug.log*
@@ -41,19 +40,19 @@ coverage/
 .eslintcache
 .parcel-cache/
 
-# ===== PHP =====
+# PHP
 vendor/
 composer.phar
 .phpunit.result.cache
 
-# ===== Python (bot) =====
+# Python (bot)
 __pycache__/
 *.py[cod]
 .venv/
 venv/
 .pytest_cache/
 
-# ===== Docker / дані контейнерів =====
+# Docker
 docker-compose.override.yml
 *.log
 logs/
@@ -64,13 +63,13 @@ grafana_data/
 prometheus_data/
 jenkins_home/
 
-# ===== IDE =====
+# IDE
 .idea/
 *.iml
 .vscode/
 *.swp
 *.swo
 
-# ===== ОС =====
+# OS
 .DS_Store
 Thumbs.db
