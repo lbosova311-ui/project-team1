@@ -3,6 +3,12 @@ pipeline {
 
     triggers {
         pollSCM('H/2 * * * *')
+        githubPush()
+    }
+
+    options {
+        disableConcurrentBuilds()
+        buildDiscarder(logRotator(numToKeepStr: '10'))
     }
 
     stages {
@@ -21,6 +27,10 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
+                    if (isUnix()) {
+                        env.PREV_IMAGE = sh(script: "docker inspect --format='{{.Config.Image}}' myapp 2>/dev/null || true", returnStdout: true).trim()
+                        echo "Currently running: ${env.PREV_IMAGE ?: 'nothing'}"
+                    }
                     runIgnoreErrors("docker rm -f myapp")
                     run("docker run -d --restart unless-stopped --name myapp -p 8081:80 -e BUILD=${env.BUILD_NUMBER} myapp:${env.BUILD_NUMBER}")
                 }
@@ -37,7 +47,18 @@ pipeline {
 
     post {
         success { echo "Build ${env.BUILD_NUMBER} deployed successfully" }
-        failure { echo "Build ${env.BUILD_NUMBER} failed, old version is still running" }
+        failure {
+            script {
+                if (isUnix() && env.PREV_IMAGE) {
+                    def prevBuild = env.PREV_IMAGE.tokenize(':')[1]
+                    echo "Deploy failed, rolling back to ${env.PREV_IMAGE}"
+                    sh "docker rm -f myapp || true"
+                    sh "docker run -d --restart unless-stopped --name myapp -p 8081:80 -e BUILD=${prevBuild} ${env.PREV_IMAGE}"
+                } else {
+                    echo "Build ${env.BUILD_NUMBER} failed before deploy, old version is still running"
+                }
+            }
+        }
     }
 }
 
