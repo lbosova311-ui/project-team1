@@ -12,7 +12,7 @@ services:
     volumes:
       - wp_content:/var/www/html/wp-content
     labels:
-      - "deploy.test=1"
+      - "deploy.test=2"
 
 volumes:
   wp_content:
