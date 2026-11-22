@@ -1,1 +1,1 @@
-# CI/CD: Jenkins on AWS, triggered by GitHub webhook.
+# CI/CD: Jenkins on AWS, triggered by GitHub webhook
