@@ -24,6 +24,22 @@ pipeline {
             }
         }
 
+        stage('Push to Docker Hub') {
+            when { environment name: 'DOCKERHUB_PUSH', value: 'true' }
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DH_USER', passwordVariable: 'DH_TOKEN')]) {
+                    sh '''
+                        echo "$DH_TOKEN" | docker login -u "$DH_USER" --password-stdin
+                        docker tag myapp:$BUILD_NUMBER $DH_USER/project-team1:$BUILD_NUMBER
+                        docker tag myapp:$BUILD_NUMBER $DH_USER/project-team1:latest
+                        docker push $DH_USER/project-team1:$BUILD_NUMBER
+                        docker push $DH_USER/project-team1:latest
+                        docker logout
+                    '''
+                }
+            }
+        }
+
         stage('Deploy') {
             steps {
                 script {
