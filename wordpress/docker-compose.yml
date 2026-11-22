@@ -7,7 +7,7 @@ services:
     environment:
       WORDPRESS_DB_HOST: ${DB_HOST}
       WORDPRESS_DB_NAME: ${DB_NAME}
-      WORDPRESS_DB_USER: ${DB_USER}
+      WORDPRESS_DB_USER: broken
       WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
     volumes:
       - wp_content:/var/www/html/wp-content
