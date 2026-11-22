@@ -11,6 +11,10 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '10'))
     }
 
+    environment {
+        WP_HOST = '184.196.191.91'
+    }
+
     stages {
         stage('Build') {
             steps {
@@ -57,6 +61,20 @@ pipeline {
             steps {
                 sleep 5
                 script { run("curl -fs http://localhost:8081 | grep 'Build: ${env.BUILD_NUMBER}'") }
+            }
+        }
+
+        stage('Deploy WordPress') {
+            when {
+                anyOf {
+                    changeset "wordpress/**"
+                    triggeredBy 'UserIdCause'
+                }
+            }
+            steps {
+                withCredentials([sshUserPrivateKey(credentialsId: 'wp-app-ssh', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
+                    sh 'ssh -i "$SSH_KEY" -o StrictHostKeyChecking=accept-new "$SSH_USER@$WP_HOST" deploy'
+                }
             }
         }
     }
