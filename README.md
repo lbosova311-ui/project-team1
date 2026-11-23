@@ -16,7 +16,7 @@
 - 📝 [WordPress](wordpress/README.md) — сервер `wp-app`, `deploy.sh`, RDS
 - 🐳 Docker — Dockerfile, docker compose
 - 🔧 [Jenkins](docs/jenkins.md) — Build → Test → Deploy → Smoke test, rollback
-- 🐙  .GitHub Actions — CI на PR, workflow `destroy-infra.yml`
+- 🐙  GitHub Actions — CI на PR, workflow `destroy-infra.yml`
 - ☁️ [Terraform](docs/terraform.md) — EC2, Security Group, S3 state, apply/destroy
 - 📊  Моніторинг — Prometheus + Grafana, node-exporter
 
