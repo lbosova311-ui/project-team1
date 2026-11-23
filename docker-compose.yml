@@ -1,0 +1,12 @@
+include:
+  - monitoring/docker-compose.yml
+
+services:
+  myapp:
+    build: .
+    container_name: myapp
+    ports:
+      - "8081:80"
+    environment:
+      BUILD: ${BUILD:-local}
+    restart: unless-stopped
