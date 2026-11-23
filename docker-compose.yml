@@ -3,10 +3,37 @@ include:
 
 services:
   myapp:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ${APP_IMAGE:-myapp}:${APP_TAG:-local}
     container_name: myapp
     ports:
-      - "8081:80"
+      - "${APP_PORT:-8081}:80"
     environment:
       BUILD: ${BUILD:-local}
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://127.0.0.1/') === false ? 1 : 0);"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+    networks:
+      - app_net
+
+networks:
+  app_net:
+    driver: bridge

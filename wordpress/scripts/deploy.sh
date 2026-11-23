@@ -19,7 +19,7 @@ healthcheck() {
   return 1
 }
 
-if sudo docker compose pull && sudo docker compose up -d --remove-orphans && healthcheck; then
+if sudo docker compose build --pull && sudo docker compose up -d --remove-orphans && healthcheck; then
   echo "Deploy OK"
   exit 0
 fi
@@ -29,7 +29,7 @@ sudo docker compose logs --tail 50 || true
 cd /opt/project-team1
 git reset --hard "$PREV"
 cd wordpress
-sudo docker compose up -d --remove-orphans
+sudo docker compose up -d --build --remove-orphans
 if healthcheck; then
   echo "Rolled back to $PREV, site is up"
 else

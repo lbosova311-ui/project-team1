@@ -1,0 +1,35 @@
+# Version control & CI
+.git
+.github
+.gitignore
+Jenkinsfile
+
+# Environment & secrets
+.env
+.env.*
+*.pem
+*.key
+secrets/
+
+# Documentation & other project stacks
+docs/
+jenkins/
+monitoring/
+terraform/
+wordpress/
+README.md
+LICENSE
+.mise.toml
+
+# Docker compose & local files
+docker-compose*.yml
+Dockerfile*
+*.log
+logs/
+data/
+
+# IDE & OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
