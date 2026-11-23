@@ -15,8 +15,7 @@ variable "ip_cidr" {
   type        = string
 }
 
-variable "public_key_path" {
+variable "public_key" {
   description = "The path to the public key file"
   type    = string
-  default = "~/.ssh/id_ed25519.pub"
 }

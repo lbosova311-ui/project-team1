@@ -17,7 +17,7 @@ data "aws_ssm_parameter" "ubuntu" {
 
 resource "aws_key_pair" "me" {
   key_name   = "${var.project}-key"
-  public_key = file(pathexpand(var.public_key_path))
+  public_key = var.public_key
 }
 
 resource "aws_security_group" "sg" {
