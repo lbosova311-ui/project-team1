@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  php-lint:
+    name: PHP syntax check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Забрати код
+        uses: actions/checkout@v4
+
+      - name: Встановити PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+
+      - name: Перевірити синтаксис PHP-файлів
+        run: find . -name "*.php" -not -path "./vendor/*" -print0 | xargs -0 -n1 php -l
+
+  docker-root:
+    name: Docker (root app)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Забрати код
+        uses: actions/checkout@v4
+
+      - name: Підготувати .env з прикладу
+        run: cp .env.example .env
+
+      - name: Перевірити compose-файл
+        run: docker compose config -q
+
+      - name: Зібрати образ
+        run: docker compose build myapp
+
+  docker-wordpress:
+    name: Docker (wordpress)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: wordpress
+    env:
+      # Фейкові значення лише для перевірки compose-файлу, це не секрети
+      DB_HOST: localhost
+      DB_NAME: wordpress
+      DB_USER: ci_user
+      DB_PASSWORD: ci_dummy_password
+      WP_AUTH_KEY: dummy
+      WP_SECURE_AUTH_KEY: dummy
+      WP_LOGGED_IN_KEY: dummy
+      WP_NONCE_KEY: dummy
+      WP_AUTH_SALT: dummy
+      WP_SECURE_AUTH_SALT: dummy
+      WP_LOGGED_IN_SALT: dummy
+      WP_NONCE_SALT: dummy
+    steps:
+      - name: Забрати код
+        uses: actions/checkout@v4
+
+      - name: Перевірити compose-файл (разом із профілем local)
+        run: docker compose --profile local config -q
+
+      - name: Зібрати образ
+        run: docker compose build wordpress
