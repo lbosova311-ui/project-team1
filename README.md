@@ -22,4 +22,4 @@
 
 ---
 
-<p align="center">Made with ❤️ by Team 1</p>
+<p align="center">Made with ❤️ by Team 1.</p>
