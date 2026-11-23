@@ -132,7 +132,7 @@ resource "aws_instance" "monitoring" {
       - job_name: nodes
         static_configs:
           - targets:
-              - "${aws_instance.app.private_ip}:9100"
+              - "${aws_instance.vm.private_ip}:9100"
               - "${aws_instance.jenkins.private_ip}:9100"
     PROM
     docker run -d --name prometheus --restart unless-stopped -p 9090:9090 \
